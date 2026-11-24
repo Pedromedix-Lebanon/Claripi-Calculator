@@ -3,726 +3,327 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pedromedix | ClariPI ROI & Economics Calculator</title>
+  <title>Pedromedix | ClariPI Software Investment & Profitability Calculator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-  
   <style>
     :root {
-      --pedro-navy: #0b1e36;
-      --pedro-blue: #1b4965;
-      --pedro-teal: #00a896;
-      --pedro-teal-light: #e8f7f5;
-      --pedro-accent: #028090;
-      --bg-body: #f8fafc;
-      --card-bg: #ffffff;
-      --border-color: #e2e8f0;
-      --text-main: #1e293b;
-      --text-muted: #64748b;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-      --shadow-md: 0 10px 25px -5px rgba(11, 30, 54, 0.07);
+      --pedro-navy:#0b1e36; --pedro-blue:#1b4965; --pedro-teal:#00a896;
+      --pedro-teal-light:#e8f7f5; --pedro-accent:#028090; --bg-body:#f8fafc;
+      --card-bg:#fff; --border-color:#e2e8f0; --text-main:#1e293b;
+      --text-muted:#64748b; --shadow-sm:0 1px 3px rgba(0,0,0,.06);
+      --shadow-md:0 10px 25px -5px rgba(11,30,54,.07);
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg-body);
-      color: var(--text-main);
-      padding: 40px 20px;
-      margin: 0;
-      line-height: 1.5;
-    }
-
-    .container {
-      max-width: 1100px;
-      margin: auto;
-    }
-
-    /* Brand Header */
-    .brand-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .brand-title {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--pedro-navy);
-      letter-spacing: -0.5px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand-badge {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      background: var(--pedro-teal-light);
-      color: var(--pedro-teal);
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-weight: 700;
-    }
-
-    /* Tabs */
-    .tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 20px;
-      background: #e2e8f0;
-      padding: 4px;
-      border-radius: 10px;
-      width: fit-content;
-    }
-
-    .tab-btn {
-      padding: 10px 22px;
-      border: none;
-      background: transparent;
-      border-radius: 8px;
-      cursor: pointer;
-      font-family: 'Inter', sans-serif;
-      font-weight: 600;
-      font-size: 13.5px;
-      color: var(--text-muted);
-      transition: all 0.2s ease;
-    }
-
-    .tab-btn.active {
-      background: var(--card-bg);
-      color: var(--pedro-navy);
-      box-shadow: var(--shadow-sm);
-    }
-
-    /* Main Calculator Card */
-    .calculator-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 36px;
-      box-shadow: var(--shadow-md);
-      display: grid;
-      grid-template-columns: 1.15fr 0.95fr;
-      gap: 40px;
-    }
-
-    @media (max-width: 900px) {
-      .calculator-card {
-        grid-template-columns: 1fr;
-        padding: 24px;
-      }
-      .brand-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-      }
-    }
-
-    h2 {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      color: var(--pedro-blue);
-      margin-top: 0;
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    h2::before {
-      content: '';
-      display: inline-block;
-      width: 4px;
-      height: 14px;
-      background: var(--pedro-teal);
-      border-radius: 2px;
-    }
-
-    /* Form Controls */
-    .control-group {
-      margin-bottom: 22px;
-    }
-
-    .control-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
-    .control-label {
-      font-size: 13.5px;
-      font-weight: 500;
-      color: var(--text-main);
-    }
-
-    .input-box-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .input-box {
-      width: 90px;
-      padding: 6px 10px;
-      font-size: 13.5px;
-      font-weight: 600;
-      font-family: 'Inter', sans-serif;
-      text-align: right;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      background: #f8fafc;
-      color: var(--pedro-navy);
-      transition: border-color 0.2s;
-    }
-
-    .input-box:focus {
-      outline: none;
-      border-color: var(--pedro-teal);
-      background: #ffffff;
-    }
-
-    .unit-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
-      min-width: 32px;
-    }
-
-    /* Sliders */
-    input[type="range"] {
-      width: 100%;
-      height: 6px;
-      background: #e2e8f0;
-      border-radius: 3px;
-      outline: none;
-      accent-color: var(--pedro-teal);
-      cursor: pointer;
-    }
-
-    .meta-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 25px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border-color);
-    }
-
-    .meta-row .control-label {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-      display: block;
-    }
-
-    /* Results Table */
-    .results-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13.5px;
-      margin-top: 15px;
-    }
-
-    .results-table th {
-      text-align: right;
-      padding: 10px 6px;
-      color: var(--text-muted);
-      font-weight: 600;
-      font-size: 11.5px;
-      letter-spacing: 0.5px;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .results-table td {
-      padding: 12px 6px;
-      border-bottom: 1px solid #f1f5f9;
-      text-align: right;
-      color: var(--text-main);
-    }
-
-    .results-table td:first-child,
-    .results-table th:first-child {
-      text-align: left;
-    }
-
-    .results-table tr.highlight td {
-      font-weight: 700;
-      color: var(--pedro-teal);
-      border-top: 1px solid var(--border-color);
-      border-bottom: 1px solid var(--border-color);
-      background: #fcfdfe;
-    }
-
-    /* Summary Card */
-    .summary-card {
-      margin-top: 25px;
-      padding: 24px;
-      background: linear-gradient(135deg, #f0fdfa 0%, #e6fffa 100%);
-      border: 1px solid #ccfbf1;
-      border-radius: 12px;
-      text-align: center;
-    }
-
-    .summary-title {
-      font-size: 12.5px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: var(--pedro-accent);
-    }
-
-    .summary-number {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 36px;
-      font-weight: 800;
-      color: var(--pedro-teal);
-      margin: 8px 0;
-    }
-
-    .btn-download {
-      display: block;
-      width: 100%;
-      background: var(--pedro-navy);
-      color: #fff;
-      border: none;
-      padding: 14px;
-      border-radius: 8px;
-      font-family: 'Inter', sans-serif;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      margin-top: 20px;
-      transition: background 0.2s ease;
-    }
-
-    .btn-download:hover {
-      background: var(--pedro-blue);
-    }
+    *{box-sizing:border-box}
+    body{font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-body);color:var(--text-main);padding:32px 18px;margin:0;line-height:1.5}
+    .container{max-width:1180px;margin:auto}
+    .brand-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border-color);gap:15px}
+    .brand-title{font-family:"Plus Jakarta Sans",sans-serif;font-size:24px;font-weight:800;color:var(--pedro-navy);letter-spacing:-.5px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .brand-badge{font-size:11px;text-transform:uppercase;letter-spacing:1px;background:var(--pedro-teal-light);color:var(--pedro-teal);padding:4px 10px;border-radius:20px;font-weight:700}
+    .header-note{font-size:13px;color:var(--text-muted);font-weight:500}
+    .intro{margin:0 0 20px;color:var(--text-muted);font-size:14px}
+    .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;background:#e2e8f0;padding:5px;border-radius:10px;width:fit-content;max-width:100%}
+    .tab-btn{padding:11px 19px;border:0;background:transparent;border-radius:8px;cursor:pointer;font:600 13px Inter,sans-serif;color:var(--text-muted);transition:.2s}
+    .tab-btn.active{background:#fff;color:var(--pedro-navy);box-shadow:var(--shadow-sm)}
+    .calculator-card{background:var(--card-bg);border:1px solid var(--border-color);border-radius:16px;padding:30px;box-shadow:var(--shadow-md);display:grid;grid-template-columns:1fr 1fr;gap:34px}
+    .panel{min-width:0}
+    h2{font-family:"Plus Jakarta Sans",sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:1.1px;color:var(--pedro-blue);margin:0 0 20px;display:flex;align-items:center;gap:8px}
+    h2:before{content:"";display:inline-block;width:4px;height:14px;background:var(--pedro-teal);border-radius:2px}
+    h3{font-size:13px;color:var(--pedro-navy);margin:22px 0 12px}
+    .section-note{font-size:12px;color:var(--text-muted);margin:-10px 0 18px}
+    .control-group{margin-bottom:17px}
+    .control-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:7px}
+    .control-label{font-size:13px;font-weight:500;color:var(--text-main)}
+    .input-box-wrapper{display:flex;align-items:center;gap:6px;flex-shrink:0}
+    .input-box{width:112px;max-width:42vw;padding:8px 9px;font-size:13px;font-weight:600;font-family:Inter,sans-serif;text-align:right;border:1px solid var(--border-color);border-radius:6px;background:#f8fafc;color:var(--pedro-navy)}
+    .input-box:focus{outline:none;border-color:var(--pedro-teal);background:#fff}
+    .unit-label{font-size:11px;font-weight:600;color:var(--text-muted);min-width:30px}
+    input[type=range]{width:100%;height:5px;background:#e2e8f0;border-radius:3px;outline:none;accent-color:var(--pedro-teal);cursor:pointer}
+    .meta-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px;padding-top:18px;border-top:1px solid var(--border-color)}
+    .meta-row label{display:block;font-size:12px;color:var(--text-muted);margin-bottom:5px}
+    .meta-row .input-box{width:100%;text-align:left;max-width:none}
+    .results-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px}
+    .results-table th{text-align:right;padding:9px 6px;color:var(--text-muted);font-weight:600;font-size:10.5px;letter-spacing:.35px;border-bottom:1px solid var(--border-color)}
+    .results-table td{padding:11px 6px;border-bottom:1px solid #f1f5f9;text-align:right;color:var(--text-main);vertical-align:top}
+    .results-table td:first-child,.results-table th:first-child{text-align:left}
+    .results-table tr.highlight td{font-weight:700;color:var(--pedro-teal);border-top:1px solid var(--border-color);background:#fcfdfe}
+    .summary-card{margin-top:20px;padding:20px;background:linear-gradient(135deg,#f0fdfa 0%,#e6fffa 100%);border:1px solid #ccfbf1;border-radius:12px;text-align:center}
+    .summary-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--pedro-accent)}
+    .summary-number{font-family:"Plus Jakarta Sans",sans-serif;font-size:32px;font-weight:800;color:var(--pedro-teal);margin:7px 0}
+    .summary-sub{font-size:12px;color:var(--text-muted)}
+    .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+    .kpi{border:1px solid var(--border-color);border-radius:9px;padding:12px;background:#fff}
+    .kpi-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.45px}
+    .kpi-value{font-size:17px;font-weight:800;color:var(--pedro-navy);margin-top:4px}
+    .note{font-size:11px;color:var(--text-muted);line-height:1.55;margin-top:14px}
+    .btn-download{display:block;width:100%;background:var(--pedro-navy);color:#fff;border:0;padding:14px;border-radius:8px;font:600 14px Inter,sans-serif;cursor:pointer;margin-top:18px}
+    .btn-download:hover{background:var(--pedro-blue)}
+    .hidden{display:none!important}
+    .positive{color:#087f5b}.negative{color:#b42318}
+    @media(max-width:900px){.calculator-card{grid-template-columns:1fr;padding:22px;gap:25px}.brand-header{align-items:flex-start;flex-direction:column}.tabs{width:100%}.tab-btn{flex:1}}
+    @media(max-width:520px){body{padding:20px 10px}.calculator-card{padding:17px}.tab-btn{padding:10px 8px;font-size:11px}.control-label{font-size:12px}.input-box{width:92px}.summary-number{font-size:27px}}
+    @media print{body{padding:0;background:#fff}.tabs,.btn-download{display:none!important}.calculator-card{box-shadow:none;border:0;page-break-inside:avoid}.calculator-card.hidden{display:none!important}.brand-header{margin-bottom:12px}.panel{break-inside:avoid}}
   </style>
 </head>
 <body>
-
 <div class="container">
-  
   <div class="brand-header">
-    <div class="brand-title">
-      PEDROMEDIX
-      <span class="brand-badge">ClariPI ROI Suite</span>
-    </div>
-    <div style="font-size: 13px; color: var(--text-muted); font-weight: 500;">
-      Clinical Financial Modeling
-    </div>
+    <div class="brand-title">PEDROMEDIX <span class="brand-badge">ClariPI ROI Suite</span></div>
+    <div class="header-note">Software Investment &amp; Profitability Calculator</div>
+  </div>
+  <p class="intro">Estimate the operational and financial impact of ClariPI software using your facility's own figures. All financial outputs are estimates based on the assumptions entered below.</p>
+
+  <div class="tabs" role="tablist" aria-label="Software calculator">
+    <button class="tab-btn active" type="button" data-tab="contrast" onclick="switchTab('contrast')">ClariCT.ACE</button>
+    <button class="tab-btn" type="button" data-tab="tube" onclick="switchTab('tube')">ClariCT.AI</button>
+    <button class="tab-btn" type="button" data-tab="pet" onclick="switchTab('pet')">ClariPET-CT</button>
   </div>
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('contrast')">Contrast Media (ClariCT.ACE)</button>
-    <button class="tab-btn" onclick="switchTab('tube')">X-Ray Tube Life (ClariCT.AI)</button>
-  </div>
-
-  <div id="contrastCalc" class="calculator-card">
-    <div>
-      <h2>Deployment & Contrast Parameters</h2>
-
-      <div class="control-group">
-        <div class="control-header">
-          <span class="control-label">Patients per machine / day</span>
-          <div class="input-box-wrapper">
-            <input type="number" id="c_pts" class="input-box" value="10" min="1" max="100" />
-          </div>
-        </div>
-        <input type="range" id="c_pts_range" min="1" max="100" value="10" />
-      </div>
-
-      <div class="control-group">
-        <div class="control-header">
-          <span class="control-label">Number of CT machines</span>
-          <div class="input-box-wrapper">
-            <input type="number" id="c_machines" class="input-box" value="1" min="1" max="50" />
-          </div>
-        </div>
-        <input type="range" id="c_machines_range" min="1" max="50" value="1" />
-      </div>
-
-      <div class="control-group">
-        <div class="control-header">
-          <span class="control-label">Contrast cost per study</span>
-          <div class="input-box-wrapper">
-            <input type="number" id="c_cost" class="input-box" value="19" min="1" max="200" />
-            <span class="unit-label">USD</span>
-          </div>
-        </div>
-        <input type="range" id="c_cost_range" min="1" max="200" value="19" />
-      </div>
-
-      <div class="control-group">
-        <div class="control-header">
-          <span class="control-label">Contrast reduction per study</span>
-          <div class="input-box-wrapper">
-            <input type="number" id="c_saving_pct" class="input-box" value="35" min="0" max="80" />
-            <span class="unit-label">%</span>
-          </div>
-        </div>
-        <input type="range" id="c_saving_pct_range" min="0" max="80" value="35" />
-      </div>
-
-      <div class="control-group">
-        <div class="control-header">
-          <span class="control-label">Software license / share of saving</span>
-          <div class="input-box-wrapper">
-            <input type="number" id="c_share_pct" class="input-box" value="50" min="0" max="100" />
-            <span class="unit-label">%</span>
-          </div>
-        </div>
-        <input type="range" id="c_share_pct_range" min="0" max="100" value="50" />
-      </div>
-
+  <!-- CLARICT.ACE -->
+  <section id="contrastCalc" class="calculator-card">
+    <div class="panel">
+      <h2>ClariCT.ACE | Inputs</h2>
+      <p class="section-note">Estimate contrast-media expenditure reduction and compare it with the software investment.</p>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="c_pts">Patients per CT machine / day</label><div class="input-box-wrapper"><input class="input-box" type="number" id="c_pts" value="10" min="0" step="1"></div></div><input type="range" id="c_pts_range" min="0" max="100" value="10"></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="c_machines">Number of CT machines</label><div class="input-box-wrapper"><input class="input-box" type="number" id="c_machines" value="1" min="1" step="1"></div></div><input type="range" id="c_machines_range" min="1" max="30" value="1"></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="c_cost">Current contrast-media cost per study</label><div class="input-box-wrapper"><input class="input-box" type="number" id="c_cost" value="19" min="0" step=".01"><span class="unit-label">USD</span></div></div><input type="range" id="c_cost_range" min="0" max="300" value="19"></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="c_saving_pct">Expected contrast cost reduction</label><div class="input-box-wrapper"><input class="input-box" type="number" id="c_saving_pct" value="35" min="0" max="80" step="1"><span class="unit-label">%</span></div></div><input type="range" id="c_saving_pct_range" min="0" max="80" value="35"></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="c_price">ClariCT.ACE software purchase price</label><div class="input-box-wrapper"><input class="input-box" type="number" id="c_price" value="0" min="0" step="100"><span class="unit-label">USD</span></div></div></div>
       <div class="meta-row">
-        <div>
-          <label class="control-label">Working days / yr</label>
-          <input type="number" id="c_days" class="input-box" style="width: 100%; text-align: left;" value="280" />
-        </div>
-        <div>
-          <label class="control-label">Projection period (years)</label>
-          <input type="number" id="c_years" class="input-box" style="width: 100%; text-align: left;" value="1" />
-        </div>
+        <div><label for="c_days">Working days / year</label><input class="input-box" type="number" id="c_days" value="280" min="1" step="1"></div>
+        <div><label for="c_years">Projection period (years)</label><input class="input-box" type="number" id="c_years" value="5" min="1" max="20" step="1"></div>
       </div>
     </div>
-
-    <div>
-      <h2>Customer Financial Return</h2>
-      <p style="font-size: 12.5px; color: var(--text-muted); margin-top: -12px;">
-        ClariCT.ACE delivers up to 45–50% contrast reduction while preserving premium image quality.
-      </p>
-
-      <table class="results-table">
-        <thead>
-          <tr>
-            <th>METRIC</th>
-            <th>PER STUDY</th>
-            <th>ANNUAL</th>
-            <th id="c_col_years">1-YR TOTAL</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Contrast cost today</td>
-            <td id="c_cost_today_study">$19.0</td>
-            <td id="c_cost_today_annual">$53,200</td>
-            <td id="c_cost_today_total">$53,200</td>
-          </tr>
-          <tr>
-            <td>Cost with ClariCT.ACE</td>
-            <td id="c_cost_ai_study">$12.4</td>
-            <td id="c_cost_ai_annual">$34,580</td>
-            <td id="c_cost_ai_total">$34,580</td>
-          </tr>
-          <tr class="highlight">
-            <td>Net Customer Savings</td>
-            <td id="c_saving_study">$3.3</td>
-            <td id="c_saving_annual">$9,310</td>
-            <td id="c_saving_total">$9,310</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="summary-card">
-        <div class="summary-title">Total Net Savings (<span id="c_sum_years">1</span> yr projection)</div>
-        <div class="summary-number" id="c_sum_total">$9,310</div>
-        <div style="font-size: 12px; color: var(--text-muted);">
-          Delivered through Pedromedix optimization
-        </div>
+    <div class="panel">
+      <h2>Financial Impact</h2>
+      <table class="results-table"><thead><tr><th>METRIC</th><th>PER STUDY</th><th>ANNUAL</th></tr></thead><tbody>
+        <tr><td>Contrast expenditure before</td><td id="c_before_study">$0</td><td id="c_before_annual">$0</td></tr>
+        <tr><td>Contrast expenditure after</td><td id="c_after_study">$0</td><td id="c_after_annual">$0</td></tr>
+        <tr class="highlight"><td>Annual contrast savings</td><td id="c_save_study">$0</td><td id="c_save_annual">$0</td></tr>
+      </tbody></table>
+      <div class="summary-card"><div class="summary-title">Annual Operating Benefit</div><div class="summary-number" id="c_benefit">$0</div><div class="summary-sub">Estimated annual contrast-media savings before software investment.</div></div>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-label">Software price</div><div class="kpi-value" id="c_k_price">$0</div></div>
+        <div class="kpi"><div class="kpi-label">First-year net gain</div><div class="kpi-value" id="c_first">$0</div></div>
+        <div class="kpi"><div class="kpi-label">ROI (first year)</div><div class="kpi-value" id="c_roi">—</div></div>
+        <div class="kpi"><div class="kpi-label">Payback period</div><div class="kpi-value" id="c_payback">—</div></div>
+        <div class="kpi"><div class="kpi-label">3-year net gain</div><div class="kpi-value" id="c_3yr">$0</div></div>
+        <div class="kpi"><div class="kpi-label">5-year net gain</div><div class="kpi-value" id="c_5yr">$0</div></div>
       </div>
-
-      <button class="btn-download" onclick="window.print()">Export Proposal PDF</button>
+      <p class="note">Calculations assume the entered contrast cost reduction is achieved across all eligible studies. Confirm achievable reduction and clinical suitability with the treating team and the facility's protocol.</p>
+      <button class="btn-download" type="button" onclick="window.print()">Export Proposal PDF</button>
     </div>
-  </div>
+  </section>
 
-  <div id="tubeCalc" class="calculator-card" style="display:none;">
-    <div>
-      <h2>Deployment & Tube-Life Parameters</h2>
-
-      <div class="control-group">
-        <div class="control-header">
-          <span class="control-label">Patients per machine / day</span>
-          <div class="input-box-wrapper">
-            <input type="number" id="t_pts" class="input-box" value="10" />
-          </div>
-        </div>
-        <input type="range" id="t_pts_range" min="1" max="100" value="10" />
-      </div>
-
-      <div class="control-group">
-        <div class="control-header">
-          <span class="control-label">Number of CT machines</span>
-          <div class="input-box-wrapper">
-            <input type="number" id="t_machines" class="input-box" value="5" />
-          </div>
-        </div>
-        <input type="range" id="t_machines_range" min="1" max="50" value="5" />
-      </div>
-
-      <div class="control-group">
-        <div class="control-header">
-          <span class="control-label">X-ray tube replacement cost</span>
-          <div class="input-box-wrapper">
-            <input type="number" id="t_cost" class="input-box" value="55000" />
-            <span class="unit-label">USD</span>
-          </div>
-        </div>
-        <input type="range" id="t_cost_range" min="10000" max="250000" step="5000" value="55000" />
-      </div>
-
-      <div class="control-group">
-        <div class="control-header">
-          <span class="control-label">Replacement cycle without AI (months)</span>
-          <div class="input-box-wrapper">
-            <input type="number" id="t_cycle_no_ai" class="input-box" value="18" />
-          </div>
-        </div>
-        <input type="range" id="t_cycle_no_ai_range" min="6" max="60" value="18" />
-      </div>
-
-      <div class="control-group">
-        <div class="control-header">
-          <span class="control-label">Replacement cycle with ClariCT AI (months)</span>
-          <div class="input-box-wrapper">
-            <input type="number" id="t_cycle_ai" class="input-box" value="90" />
-          </div>
-        </div>
-        <input type="range" id="t_cycle_ai_range" min="12" max="180" value="90" />
-      </div>
-
-      <div class="control-group">
-        <div class="control-header">
-          <span class="control-label">Downtime per replacement (months)</span>
-          <div class="input-box-wrapper">
-            <input type="number" id="t_downtime" class="input-box" value="2" />
-          </div>
-        </div>
-        <input type="range" id="t_downtime_range" min="0" max="6" step="0.5" value="2" />
-      </div>
-
-      <div class="control-group">
-        <div class="control-header">
-          <span class="control-label">Billing rate per scan</span>
-          <div class="input-box-wrapper">
-            <input type="number" id="t_billing" class="input-box" value="0" />
-            <span class="unit-label">USD</span>
-          </div>
-        </div>
-        <input type="range" id="t_billing_range" min="0" max="500" value="0" />
-      </div>
-
-      <div class="control-group">
-        <div class="control-header">
-          <span class="control-label">Software license / share of saving</span>
-          <div class="input-box-wrapper">
-            <input type="number" id="t_share" class="input-box" value="50" />
-            <span class="unit-label">%</span>
-          </div>
-        </div>
-        <input type="range" id="t_share_range" min="0" max="100" value="50" />
-      </div>
-
-      <div class="meta-row">
-        <div>
-          <label class="control-label">Working days / yr</label>
-          <input type="number" id="t_days" class="input-box" style="width: 100%; text-align: left;" value="280" />
-        </div>
-        <div>
-          <label class="control-label">Projection period (years)</label>
-          <input type="number" id="t_years" class="input-box" style="width: 100%; text-align: left;" value="1" />
-        </div>
-      </div>
+  <!-- CLARICT.AI -->
+  <section id="tubeCalc" class="calculator-card hidden">
+    <div class="panel">
+      <h2>ClariCT.AI | Inputs</h2>
+      <p class="section-note">Estimate tube replacement cost reduction and the financial impact of avoiding scanner downtime.</p>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="t_pts">Patients per CT machine / day</label><div class="input-box-wrapper"><input class="input-box" type="number" id="t_pts" value="10" min="0" step="1"></div></div><input type="range" id="t_pts_range" min="0" max="100" value="10"></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="t_machines">Number of CT machines</label><div class="input-box-wrapper"><input class="input-box" type="number" id="t_machines" value="1" min="1" step="1"></div></div><input type="range" id="t_machines_range" min="1" max="30" value="1"></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="t_cost">X-ray tube replacement cost</label><div class="input-box-wrapper"><input class="input-box" type="number" id="t_cost" value="55000" min="0" step="500"><span class="unit-label">USD</span></div></div><input type="range" id="t_cost_range" min="0" max="250000" step="1000" value="55000"></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="t_cycle_no_ai">Replacement cycle without ClariCT.AI</label><div class="input-box-wrapper"><input class="input-box" type="number" id="t_cycle_no_ai" value="18" min="1" step="1"><span class="unit-label">months</span></div></div><input type="range" id="t_cycle_no_ai_range" min="1" max="120" value="18"></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="t_cycle_ai">Expected replacement cycle with ClariCT.AI</label><div class="input-box-wrapper"><input class="input-box" type="number" id="t_cycle_ai" value="30" min="1" step="1"><span class="unit-label">months</span></div></div><input type="range" id="t_cycle_ai_range" min="1" max="180" value="30"></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="t_downtime">Downtime per tube replacement</label><div class="input-box-wrapper"><input class="input-box" type="number" id="t_downtime" value="2" min="0" step=".5"><span class="unit-label">months</span></div></div><input type="range" id="t_downtime_range" min="0" max="6" step=".5" value="2"></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="t_billing">Average revenue per scan</label><div class="input-box-wrapper"><input class="input-box" type="number" id="t_billing" value="0" min="0" step="1"><span class="unit-label">USD</span></div></div><input type="range" id="t_billing_range" min="0" max="1000" value="0"></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="t_variable">Variable operating cost per scan</label><div class="input-box-wrapper"><input class="input-box" type="number" id="t_variable" value="0" min="0" step="1"><span class="unit-label">USD</span></div></div></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="t_price">ClariCT.AI software purchase price</label><div class="input-box-wrapper"><input class="input-box" type="number" id="t_price" value="0" min="0" step="100"><span class="unit-label">USD</span></div></div></div>
+      <div class="meta-row"><div><label for="t_days">Working days / year</label><input class="input-box" type="number" id="t_days" value="280" min="1" step="1"></div><div><label for="t_years">Projection period (years)</label><input class="input-box" type="number" id="t_years" value="5" min="1" max="20" step="1"></div></div>
     </div>
-
-    <div>
-      <h2>Customer Financial Return</h2>
-      <table class="results-table">
-        <thead>
-          <tr>
-            <th>METRIC</th>
-            <th>ANNUAL</th>
-            <th id="t_col_years">1-YR TOTAL</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Tube expense without AI</td>
-            <td id="t_cost_no_ai_annual">$0</td>
-            <td id="t_cost_no_ai_total">$0</td>
-          </tr>
-          <tr>
-            <td>Tube expense with ClariCT</td>
-            <td id="t_cost_ai_annual">$0</td>
-            <td id="t_cost_ai_total">$0</td>
-          </tr>
-          <tr>
-            <td>Downtime loss avoided</td>
-            <td id="t_downtime_saving_annual">$0</td>
-            <td id="t_downtime_saving_total">$0</td>
-          </tr>
-          <tr class="highlight">
-            <td>Net Customer Savings</td>
-            <td id="t_saving_annual">$0</td>
-            <td id="t_saving_total">$0</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="summary-card">
-        <div class="summary-title">Total Tube Savings (<span id="t_sum_years">1</span> yr projection)</div>
-        <div class="summary-number" id="t_sum_total">$0</div>
-        <div style="font-size: 12px; color: var(--text-muted);">
-          Delivered through Pedromedix optimization
-        </div>
+    <div class="panel">
+      <h2>Financial Impact</h2>
+      <table class="results-table"><thead><tr><th>METRIC</th><th>ANNUAL</th></tr></thead><tbody>
+        <tr><td>Tube expense without AI</td><td id="t_cost_no_ai">$0</td></tr>
+        <tr><td>Tube expense with ClariCT.AI</td><td id="t_cost_ai">$0</td></tr>
+        <tr><td>Estimated tube cost savings</td><td id="t_tube_saving">$0</td></tr>
+        <tr><td>Contribution from avoided downtime</td><td id="t_downtime_saving">$0</td></tr>
+        <tr class="highlight"><td>Total annual operating benefit</td><td id="t_benefit">$0</td></tr>
+      </tbody></table>
+      <div class="summary-card"><div class="summary-title">Annual Operating Benefit</div><div class="summary-number" id="t_summary">$0</div><div class="summary-sub">Tube cost savings plus estimated contribution from avoided downtime.</div></div>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-label">Software price</div><div class="kpi-value" id="t_k_price">$0</div></div>
+        <div class="kpi"><div class="kpi-label">First-year net gain</div><div class="kpi-value" id="t_first">$0</div></div>
+        <div class="kpi"><div class="kpi-label">ROI (first year)</div><div class="kpi-value" id="t_roi">—</div></div>
+        <div class="kpi"><div class="kpi-label">Payback period</div><div class="kpi-value" id="t_payback">—</div></div>
+        <div class="kpi"><div class="kpi-label">3-year net gain</div><div class="kpi-value" id="t_3yr">$0</div></div>
+        <div class="kpi"><div class="kpi-label">5-year net gain</div><div class="kpi-value" id="t_5yr">$0</div></div>
       </div>
-
-      <button class="btn-download" onclick="window.print()">Export Proposal PDF</button>
+      <p class="note">Downtime benefit is estimated using the contribution margin per scan (billing minus variable scan cost) and the estimated number of replacement events avoided. Actual tube life and downtime depend on equipment use, service conditions and manufacturer guidance.</p>
+      <button class="btn-download" type="button" onclick="window.print()">Export Proposal PDF</button>
     </div>
-  </div>
+  </section>
+
+  <!-- CLARIPET-CT -->
+  <section id="petCalc" class="calculator-card hidden">
+    <div class="panel">
+      <h2>ClariPET-CT | PET Workflow Inputs</h2>
+      <p class="section-note">Estimate the financial impact of shorter PET acquisition time, additional patient capacity and radiopharmaceutical costs.</p>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="p_scanners">Number of PET scanners</label><div class="input-box-wrapper"><input class="input-box" type="number" id="p_scanners" value="1" min="1" step="1"></div></div></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="p_patients">Current patients per scanner / day</label><div class="input-box-wrapper"><input class="input-box" type="number" id="p_patients" value="10" min="0" step="1"></div></div><input type="range" id="p_patients_range" min="0" max="60" value="10"></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="p_time">Current imaging time per patient</label><div class="input-box-wrapper"><input class="input-box" type="number" id="p_time" value="40" min="1" step="1"><span class="unit-label">minutes</span></div></div></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="p_reduction">Imaging time reduction with ClariPET-CT</label><div class="input-box-wrapper"><input class="input-box" type="number" id="p_reduction" value="50" min="0" max="50" step="1"><span class="unit-label">%</span></div></div><input type="range" id="p_reduction_range" min="0" max="50" value="50"></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="p_hours">Scanner operating hours / day</label><div class="input-box-wrapper"><input class="input-box" type="number" id="p_hours" value="8" min="1" step=".5"><span class="unit-label">hours</span></div></div></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="p_util">Expected utilization of additional capacity</label><div class="input-box-wrapper"><input class="input-box" type="number" id="p_util" value="70" min="0" max="100" step="1"><span class="unit-label">%</span></div></div><input type="range" id="p_util_range" min="0" max="100" value="70"></div>
+
+      <h3>Radiopharmaceutical Cost &amp; Consumption</h3>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="p_agent_price">Radiopharmaceutical price per mL</label><div class="input-box-wrapper"><input class="input-box" type="number" id="p_agent_price" value="0" min="0" step=".01"><span class="unit-label">USD</span></div></div></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="p_agent_ml">Current administered volume per patient</label><div class="input-box-wrapper"><input class="input-box" type="number" id="p_agent_ml" value="0" min="0" step=".1"><span class="unit-label">mL</span></div></div></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="p_dose_reduction">Clinically validated volume reduction per patient (optional)</label><div class="input-box-wrapper"><input class="input-box" type="number" id="p_dose_reduction" value="0" min="0" max="100" step="1"><span class="unit-label">%</span></div></div></div>
+      <p class="note">Time reduction does not automatically mean a lower injected radiopharmaceutical dose. Leave dose reduction at 0% unless a lower administered volume is supported by the facility's approved clinical protocol.</p>
+
+      <h3>Revenue, Costs &amp; Investment</h3>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="p_revenue">Revenue billed per PET examination</label><div class="input-box-wrapper"><input class="input-box" type="number" id="p_revenue" value="0" min="0" step="1"><span class="unit-label">USD</span></div></div></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="p_other_cost">Other variable cost per additional patient (excluding tracer)</label><div class="input-box-wrapper"><input class="input-box" type="number" id="p_other_cost" value="0" min="0" step="1"><span class="unit-label">USD</span></div></div></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="p_price">ClariPET-CT software purchase price</label><div class="input-box-wrapper"><input class="input-box" type="number" id="p_price" value="0" min="0" step="100"><span class="unit-label">USD</span></div></div></div>
+      <div class="meta-row"><div><label for="p_days">Working days / year</label><input class="input-box" type="number" id="p_days" value="280" min="1" step="1"></div><div><label for="p_years">Projection period (years)</label><input class="input-box" type="number" id="p_years" value="5" min="1" max="20" step="1"></div></div>
+    </div>
+    <div class="panel">
+      <h2>ClariPET-CT | Financial Impact</h2>
+      <table class="results-table"><thead><tr><th>METRIC</th><th>BEFORE</th><th>WITH CLARIPET-CT</th></tr></thead><tbody>
+        <tr><td>Imaging time per patient</td><td id="p_before_time">40 min</td><td id="p_after_time">20 min</td></tr>
+        <tr><td>Maximum theoretical patients / scanner / day</td><td id="p_before_capacity">12</td><td id="p_after_capacity">24</td></tr>
+        <tr><td>Current / estimated additional patients per day (all scanners)</td><td id="p_current_daily">10</td><td id="p_add_daily">0</td></tr>
+        <tr><td>Additional PET examinations / year</td><td>—</td><td id="p_add_annual">0</td></tr>
+        <tr><td>Radiopharmaceutical cost per patient</td><td id="p_agent_before">$0</td><td id="p_agent_after">$0</td></tr>
+        <tr><td>Additional annual gross revenue</td><td>—</td><td id="p_revenue_annual">$0</td></tr>
+        <tr><td>Additional annual radiopharmaceutical cost</td><td>—</td><td id="p_agent_additional">$0</td></tr>
+        <tr><td>Annual tracer savings on existing patients</td><td>—</td><td id="p_agent_saving">$0</td></tr>
+        <tr><td>Other additional variable costs</td><td>—</td><td id="p_other_annual">$0</td></tr>
+        <tr class="highlight"><td>Annual net operating benefit</td><td>—</td><td id="p_benefit">$0</td></tr>
+      </tbody></table>
+      <div class="summary-card"><div class="summary-title">Annual Net Operating Benefit</div><div class="summary-number" id="p_summary">$0</div><div class="summary-sub">Additional patient contribution plus any validated tracer savings, less additional variable costs.</div></div>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-label">Software price</div><div class="kpi-value" id="p_k_price">$0</div></div>
+        <div class="kpi"><div class="kpi-label">First-year net gain</div><div class="kpi-value" id="p_first">$0</div></div>
+        <div class="kpi"><div class="kpi-label">ROI (first year)</div><div class="kpi-value" id="p_roi">—</div></div>
+        <div class="kpi"><div class="kpi-label">Payback period</div><div class="kpi-value" id="p_payback">—</div></div>
+        <div class="kpi"><div class="kpi-label">3-year net gain</div><div class="kpi-value" id="p_3yr">$0</div></div>
+        <div class="kpi"><div class="kpi-label">5-year net gain</div><div class="kpi-value" id="p_5yr">$0</div></div>
+      </div>
+      <p class="note">Capacity is limited by operating hours and scan duration. The estimated additional patient volume is reduced by the utilization assumption and is a scenario, not a guarantee of demand. Additional tracer consumption for additional patients is deducted from revenue. Direct tracer savings on existing patients are only included when a validated dose/volume reduction is entered.</p>
+      <button class="btn-download" type="button" onclick="window.print()">Export Proposal PDF</button>
+    </div>
+  </section>
+  <p class="note" style="text-align:center;margin:22px auto 0;max-width:900px">This calculator is an illustrative financial planning tool, not a clinical dosing recommendation or a guarantee of commercial results. All assumptions should be reviewed and validated by the facility.</p>
 </div>
 
 <script>
-  function syncInputs(numId, rangeId, callback) {
-    const num = document.getElementById(numId);
-    const range = document.getElementById(rangeId);
-    if (!num || !range) return;
-    num.addEventListener("input", () => {
-      range.value = num.value;
-      callback();
-    });
-    range.addEventListener("input", () => {
-      num.value = range.value;
-      callback();
-    });
+  const $ = id => document.getElementById(id);
+  const num = id => {
+    const value = Number.parseFloat($(id)?.value);
+    return Number.isFinite(value) ? Math.max(0, value) : 0;
+  };
+  const money = value => "$" + (Number.isFinite(value) ? value : 0).toLocaleString("en-US",{maximumFractionDigits:0});
+  const money2 = value => "$" + (Number.isFinite(value) ? value : 0).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+  const set = (id,value) => { if ($(id)) $(id).textContent = value; };
+  const safeYears = id => Math.max(1, Math.min(20, num(id) || 1));
+  function financial(prefix, annualBenefit, price) {
+    const first = annualBenefit - price;
+    const roi = price > 0 ? (first / price) * 100 : null;
+    const payback = annualBenefit > 0 ? (price / annualBenefit) * 12 : null;
+    set(prefix+"_k_price",money(price));
+    set(prefix+"_first",money(first));
+    set(prefix+"_roi",price > 0 ? roi.toFixed(1)+"%" : "N/A (enter price)");
+    set(prefix+"_payback",payback !== null ? (payback < 1 ? payback.toFixed(1)+" months" : payback.toFixed(1)+" months") : "Not achieved");
+    set(prefix+"_3yr",money(annualBenefit*3-price));
+    set(prefix+"_5yr",money(annualBenefit*5-price));
+    const firstEl = $(prefix+"_first");
+    if (firstEl) firstEl.className = "kpi-value " + (first >= 0 ? "positive" : "negative");
   }
-
-  function formatCurrency(val) {
-    return "$" + Math.round(val).toLocaleString();
-  }
-
   function updateContrast() {
-    const pts = parseFloat(document.getElementById("c_pts").value) || 0;
-    const machines = parseFloat(document.getElementById("c_machines").value) || 0;
-    const costStudy = parseFloat(document.getElementById("c_cost").value) || 0;
-    const savingPct = (parseFloat(document.getElementById("c_saving_pct").value) || 0) / 100;
-    const sharePct = (parseFloat(document.getElementById("c_share_pct").value) || 0) / 100;
-    const days = parseFloat(document.getElementById("c_days").value) || 0;
-    const years = parseFloat(document.getElementById("c_years").value) || 1;
-
-    const annualStudies = pts * machines * days;
-    const grossSavingPerStudy = costStudy * savingPct;
-    const netSavingPerStudy = grossSavingPerStudy * (1 - sharePct);
-
-    const annualToday = costStudy * annualStudies;
-    const annualNetSave = netSavingPerStudy * annualStudies;
-    const totalNetSave = annualNetSave * years;
-
-    document.getElementById("c_col_years").innerText = `${years}-YR TOTAL`;
-    document.getElementById("c_cost_today_study").innerText = "$" + costStudy.toFixed(1);
-    document.getElementById("c_cost_today_annual").innerText = formatCurrency(annualToday);
-    document.getElementById("c_cost_today_total").innerText = formatCurrency(annualToday * years);
-
-    document.getElementById("c_cost_ai_study").innerText = "$" + (costStudy - netSavingPerStudy).toFixed(1);
-    document.getElementById("c_cost_ai_annual").innerText = formatCurrency(annualToday - annualNetSave);
-    document.getElementById("c_cost_ai_total").innerText = formatCurrency((annualToday - annualNetSave) * years);
-
-    document.getElementById("c_saving_study").innerText = "$" + netSavingPerStudy.toFixed(1);
-    document.getElementById("c_saving_annual").innerText = formatCurrency(annualNetSave);
-    document.getElementById("c_saving_total").innerText = formatCurrency(totalNetSave);
-
-    document.getElementById("c_sum_years").innerText = years;
-    document.getElementById("c_sum_total").innerText = formatCurrency(totalNetSave);
+    const pts=num("c_pts"), machines=Math.max(1,num("c_machines")), cost=num("c_cost");
+    const reduction=Math.min(80,num("c_saving_pct"))/100, days=num("c_days");
+    const years=safeYears("c_years"), price=num("c_price");
+    const annualStudies=pts*machines*days;
+    const beforePer=cost, afterPer=cost*(1-reduction), savingPer=cost*reduction;
+    const annualBenefit=savingPer*annualStudies;
+    set("c_before_study",money2(beforePer)); set("c_after_study",money2(afterPer)); set("c_save_study",money2(savingPer));
+    set("c_before_annual",money(cost*annualStudies)); set("c_after_annual",money(afterPer*annualStudies));
+    set("c_save_annual",money(annualBenefit)); set("c_benefit",money(annualBenefit));
+    financial("c",annualBenefit,price);
   }
-
   function updateTube() {
-    const pts = parseFloat(document.getElementById("t_pts").value) || 0;
-    const machines = parseFloat(document.getElementById("t_machines").value) || 0;
-    const tubeCost = parseFloat(document.getElementById("t_cost").value) || 0;
-    const cycleNoAi = parseFloat(document.getElementById("t_cycle_no_ai").value) || 1;
-    const cycleAi = parseFloat(document.getElementById("t_cycle_ai").value) || 1;
-    const downtime = parseFloat(document.getElementById("t_downtime").value) || 0;
-    const billingRate = parseFloat(document.getElementById("t_billing").value) || 0;
-    const sharePct = (parseFloat(document.getElementById("t_share").value) || 0) / 100;
-    const days = parseFloat(document.getElementById("t_days").value) || 0;
-    const years = parseFloat(document.getElementById("t_years").value) || 1;
-
-    const annualTubesNoAi = (12 / cycleNoAi) * machines;
-    const annualTubesAi = (12 / cycleAi) * machines;
-
-    const annualCostNoAi = annualTubesNoAi * tubeCost;
-    const annualCostAi = annualTubesAi * tubeCost;
-
-    const monthlyPatients = (pts * days) / 12;
-    const downtimeReplacementsAvoided = Math.max(0, annualTubesNoAi - annualTubesAi);
-    const annualDowntimeLossAvoided = downtimeReplacementsAvoided * (downtime * monthlyPatients * billingRate);
-
-    const grossAnnualSavings = (annualCostNoAi - annualCostAi) + annualDowntimeLossAvoided;
-    const netAnnualSavings = grossAnnualSavings * (1 - sharePct);
-    const totalNetSavings = netAnnualSavings * years;
-
-    document.getElementById("t_col_years").innerText = `${years}-YR TOTAL`;
-    document.getElementById("t_cost_no_ai_annual").innerText = formatCurrency(annualCostNoAi);
-    document.getElementById("t_cost_no_ai_total").innerText = formatCurrency(annualCostNoAi * years);
-
-    document.getElementById("t_cost_ai_annual").innerText = formatCurrency(annualCostAi);
-    document.getElementById("t_cost_ai_total").innerText = formatCurrency(annualCostAi * years);
-
-    document.getElementById("t_downtime_saving_annual").innerText = formatCurrency(annualDowntimeLossAvoided);
-    document.getElementById("t_downtime_saving_total").innerText = formatCurrency(annualDowntimeLossAvoided * years);
-
-    document.getElementById("t_saving_annual").innerText = formatCurrency(netAnnualSavings);
-    document.getElementById("t_saving_total").innerText = formatCurrency(totalNetSavings);
-
-    document.getElementById("t_sum_years").innerText = years;
-    document.getElementById("t_sum_total").innerText = formatCurrency(totalNetSavings);
+    const pts=num("t_pts"), machines=Math.max(1,num("t_machines")), tubeCost=num("t_cost");
+    const cycleNo=Math.max(1,num("t_cycle_no_ai")), cycleAI=Math.max(1,num("t_cycle_ai"));
+    const downtime=num("t_downtime"), billing=num("t_billing"), variable=num("t_variable");
+    const days=num("t_days"), price=num("t_price");
+    const eventsNo=machines*12/cycleNo, eventsAI=machines*12/cycleAI;
+    const annualCostNo=eventsNo*tubeCost, annualCostAI=eventsAI*tubeCost;
+    const avoidedEvents=Math.max(0,eventsNo-eventsAI);
+    const monthlyScansPerMachine=pts*days/12;
+    const contributionPerScan=Math.max(0,billing-variable);
+    const downtimeContribution=avoidedEvents*downtime*monthlyScansPerMachine*contributionPerScan;
+    const tubeSavings=annualCostNo-annualCostAI;
+    const benefit=tubeSavings+downtimeContribution;
+    set("t_cost_no_ai",money(annualCostNo)); set("t_cost_ai",money(annualCostAI));
+    set("t_tube_saving",money(tubeSavings)); set("t_downtime_saving",money(downtimeContribution));
+    set("t_benefit",money(benefit)); set("t_summary",money(benefit));
+    financial("t",benefit,price);
   }
-
-  // Setup Event Listeners
-  const contrastFields = ["c_pts", "c_machines", "c_cost", "c_saving_pct", "c_share_pct"];
-  contrastFields.forEach((id) => syncInputs(id, id + "_range", updateContrast));
-  ["c_days", "c_years"].forEach((id) => {
-    document.getElementById(id).addEventListener("input", updateContrast);
-  });
-
-  const tubeFields = ["t_pts", "t_machines", "t_cost", "t_cycle_no_ai", "t_cycle_ai", "t_downtime", "t_billing", "t_share"];
-  tubeFields.forEach((id) => syncInputs(id, id + "_range", updateTube));
-  ["t_days", "t_years"].forEach((id) => {
-    document.getElementById(id).addEventListener("input", updateTube);
-  });
-
+  function updatePet() {
+    const scanners=Math.max(1,num("p_scanners")), currentPerScanner=num("p_patients");
+    const currentTime=Math.max(1,num("p_time")), reduction=Math.min(50,num("p_reduction"))/100;
+    const newTime=currentTime*(1-reduction), hours=num("p_hours"), utilization=Math.min(100,num("p_util"))/100;
+    const days=num("p_days"), years=safeYears("p_years"), price=num("p_price");
+    const agentPrice=num("p_agent_price"), agentMl=num("p_agent_ml");
+    const doseReduction=Math.min(100,num("p_dose_reduction"))/100;
+    const revenue=num("p_revenue"), otherCost=num("p_other_cost");
+    const beforeCapacity=(hours*60)/currentTime;
+    const afterCapacity=newTime>0 ? (hours*60)/newTime : 0;
+    const currentDaily=currentPerScanner*scanners;
+    const theoreticalAdditionalPerScanner=Math.max(0,afterCapacity-currentPerScanner);
+    const additionalDaily=theoreticalAdditionalPerScanner*scanners*utilization;
+    const additionalAnnual=additionalDaily*days;
+    const tracerBefore=agentPrice*agentMl;
+    const tracerAfter=tracerBefore*(1-doseReduction);
+    const additionalTracerCost=additionalAnnual*tracerAfter;
+    const annualExistingPatients=currentDaily*days;
+    const existingTracerSavings=annualExistingPatients*(tracerBefore-tracerAfter);
+    const additionalRevenue=additionalAnnual*revenue;
+    const additionalOtherCosts=additionalAnnual*otherCost;
+    const annualBenefit=additionalRevenue-additionalTracerCost-additionalOtherCosts+existingTracerSavings;
+    const afterCapacityAll=afterCapacity*scanners;
+    set("p_before_time",currentTime.toFixed(1)+" min"); set("p_after_time",newTime.toFixed(1)+" min");
+    set("p_before_capacity",beforeCapacity.toFixed(1)); set("p_after_capacity",afterCapacity.toFixed(1));
+    set("p_current_daily",currentDaily.toFixed(1)); set("p_add_daily",additionalDaily.toFixed(1));
+    set("p_add_annual",Math.round(additionalAnnual).toLocaleString("en-US"));
+    set("p_agent_before",money2(tracerBefore)); set("p_agent_after",money2(tracerAfter));
+    set("p_revenue_annual",money(additionalRevenue)); set("p_agent_additional",money(additionalTracerCost));
+    set("p_agent_saving",money(existingTracerSavings)); set("p_other_annual",money(additionalOtherCosts));
+    set("p_benefit",money(annualBenefit)); set("p_summary",money(annualBenefit));
+    financial("p",annualBenefit,price);
+  }
   function switchTab(tab) {
-    document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
-    if (tab === "contrast") {
-      document.querySelectorAll(".tab-btn")[0].classList.add("active");
-      document.getElementById("contrastCalc").style.display = "grid";
-      document.getElementById("tubeCalc").style.display = "none";
-      updateContrast();
-    } else {
-      document.querySelectorAll(".tab-btn")[1].classList.add("active");
-      document.getElementById("contrastCalc").style.display = "none";
-      document.getElementById("tubeCalc").style.display = "grid";
-      updateTube();
-    }
+    const map={contrast:"contrastCalc",tube:"tubeCalc",pet:"petCalc"};
+    Object.entries(map).forEach(([key,id])=>$(id).classList.toggle("hidden",key!==tab));
+    document.querySelectorAll(".tab-btn").forEach(btn=>btn.classList.toggle("active",btn.dataset.tab===tab));
+    if(tab==="contrast") updateContrast();
+    if(tab==="tube") updateTube();
+    if(tab==="pet") updatePet();
   }
-
-  // Initial Calculation Run
-  updateContrast();
-  updateTube();
+  function bindNumberAndRange(numberId,rangeId,callback) {
+    const n=$(numberId), r=$(rangeId); if(!n||!r)return;
+    n.addEventListener("input",()=>{const v=Number(n.value);if(Number.isFinite(v))r.value=Math.min(Number(r.max),Math.max(Number(r.min),v));callback();});
+    r.addEventListener("input",()=>{n.value=r.value;callback();});
+  }
+  [
+    ["c_pts","c_pts_range",updateContrast],["c_machines","c_machines_range",updateContrast],
+    ["c_cost","c_cost_range",updateContrast],["c_saving_pct","c_saving_pct_range",updateContrast],
+    ["t_pts","t_pts_range",updateTube],["t_machines","t_machines_range",updateTube],
+    ["t_cost","t_cost_range",updateTube],["t_cycle_no_ai","t_cycle_no_ai_range",updateTube],
+    ["t_cycle_ai","t_cycle_ai_range",updateTube],["t_downtime","t_downtime_range",updateTube],
+    ["t_billing","t_billing_range",updateTube],["p_patients","p_patients_range",updatePet],
+    ["p_reduction","p_reduction_range",updatePet],["p_util","p_util_range",updatePet]
+  ].forEach(args=>bindNumberAndRange(...args));
+  const groups={
+    contrast:["c_price","c_days","c_years"],
+    tube:["t_variable","t_price","t_days","t_years"],
+    pet:["p_scanners","p_time","p_hours","p_agent_price","p_agent_ml","p_dose_reduction","p_revenue","p_other_cost","p_price","p_days","p_years"]
+  };
+  Object.entries(groups).forEach(([key,ids])=>ids.forEach(id=>$(id).addEventListener("input",()=>key==="contrast"?updateContrast():key==="tube"?updateTube():updatePet())));
+  updateContrast(); updateTube(); updatePet();
 </script>
 </body>
 </html>
