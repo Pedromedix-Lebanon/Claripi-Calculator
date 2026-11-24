@@ -84,11 +84,15 @@
   <section id="contrastCalc" class="calculator-card">
     <div class="panel">
       <h2>ClariCT.ACE | Inputs</h2>
-      <p class="section-note">Estimate contrast-media expenditure reduction and compare it with the software investment.</p>
-      <div class="control-group"><div class="control-header"><label class="control-label" for="c_pts">Patients per CT machine / day</label><div class="input-box-wrapper"><input class="input-box" type="number" id="c_pts" value="10" min="0" step="1"></div></div><input type="range" id="c_pts_range" min="0" max="100" value="10"></div>
+      <p class="section-note">Estimate contrast-media expenditure reduction and additional billing revenue, then compare the combined benefit with the software investment.</p>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="c_pts">Eligible contrast-enhanced CT examinations per machine / day</label><div class="input-box-wrapper"><input class="input-box" type="number" id="c_pts" value="10" min="0" step="1"></div></div><input type="range" id="c_pts_range" min="0" max="100" value="10"></div>
       <div class="control-group"><div class="control-header"><label class="control-label" for="c_machines">Number of CT machines</label><div class="input-box-wrapper"><input class="input-box" type="number" id="c_machines" value="1" min="1" step="1"></div></div><input type="range" id="c_machines_range" min="1" max="30" value="1"></div>
       <div class="control-group"><div class="control-header"><label class="control-label" for="c_cost">Current contrast-media cost per study</label><div class="input-box-wrapper"><input class="input-box" type="number" id="c_cost" value="19" min="0" step=".01"><span class="unit-label">USD</span></div></div><input type="range" id="c_cost_range" min="0" max="300" value="19"></div>
       <div class="control-group"><div class="control-header"><label class="control-label" for="c_saving_pct">Expected contrast cost reduction</label><div class="input-box-wrapper"><input class="input-box" type="number" id="c_saving_pct" value="35" min="0" max="80" step="1"><span class="unit-label">%</span></div></div><input type="range" id="c_saving_pct_range" min="0" max="80" value="35"></div>
+      <h3>Patient Billing Price Increase</h3>
+      <p class="section-note">Enter the current and proposed patient charge. Only the positive difference is counted as additional revenue.</p>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="c_current_billing_price">Current billing price per eligible CT examination</label><div class="input-box-wrapper"><input class="input-box" type="number" id="c_current_billing_price" value="0" min="0" step="0.01"><span class="unit-label">USD</span></div></div></div>
+      <div class="control-group"><div class="control-header"><label class="control-label" for="c_proposed_billing_price">Proposed new billing price per eligible CT examination</label><div class="input-box-wrapper"><input class="input-box" type="number" id="c_proposed_billing_price" value="0" min="0" step="0.01"><span class="unit-label">USD</span></div></div></div>
       <div class="control-group"><div class="control-header"><label class="control-label" for="c_price">ClariCT.ACE software purchase price</label><div class="input-box-wrapper"><input class="input-box" type="number" id="c_price" value="0" min="0" step="100"><span class="unit-label">USD</span></div></div></div>
       <div class="meta-row">
         <div><label for="c_days">Working days / year</label><input class="input-box" type="number" id="c_days" value="280" min="1" step="1"></div>
@@ -100,9 +104,13 @@
       <table class="results-table"><thead><tr><th>METRIC</th><th>PER STUDY</th><th>ANNUAL</th></tr></thead><tbody>
         <tr><td>Contrast expenditure before</td><td id="c_before_study">$0</td><td id="c_before_annual">$0</td></tr>
         <tr><td>Contrast expenditure after</td><td id="c_after_study">$0</td><td id="c_after_annual">$0</td></tr>
-        <tr class="highlight"><td>Annual contrast savings</td><td id="c_save_study">$0</td><td id="c_save_annual">$0</td></tr>
+        <tr><td>Annual contrast-media savings</td><td id="c_save_study">$0</td><td id="c_save_annual">$0</td></tr>
+        <tr><td>Current patient billing price</td><td id="c_current_price_study">$0</td><td>—</td></tr>
+        <tr><td>Proposed patient billing price</td><td id="c_proposed_price_study">$0</td><td>—</td></tr>
+        <tr><td>Additional billing revenue</td><td id="c_billing_increase_study">$0</td><td id="c_billing_increase_annual">$0</td></tr>
+        <tr class="highlight"><td>Combined annual financial benefit</td><td>—</td><td id="c_combined_annual">$0</td></tr>
       </tbody></table>
-      <div class="summary-card"><div class="summary-title">Annual Operating Benefit</div><div class="summary-number" id="c_benefit">$0</div><div class="summary-sub">Estimated annual contrast-media savings before software investment.</div></div>
+      <div class="summary-card"><div class="summary-title">Combined Annual Financial Benefit</div><div class="summary-number" id="c_benefit">$0</div><div class="summary-sub">Annual contrast-media savings plus additional revenue from increased patient billing, before software investment.</div></div>
       <div class="kpi-grid">
         <div class="kpi"><div class="kpi-label">Software price</div><div class="kpi-value" id="c_k_price">$0</div></div>
         <div class="kpi"><div class="kpi-label">First-year net gain</div><div class="kpi-value" id="c_first">$0</div></div>
@@ -111,7 +119,7 @@
         <div class="kpi"><div class="kpi-label">3-year net gain</div><div class="kpi-value" id="c_3yr">$0</div></div>
         <div class="kpi"><div class="kpi-label">5-year net gain</div><div class="kpi-value" id="c_5yr">$0</div></div>
       </div>
-      <p class="note">Calculations assume the entered contrast cost reduction is achieved across all eligible studies. Confirm achievable reduction and clinical suitability with the treating team and the facility's protocol.</p>
+      <p class="note">Additional billing revenue is calculated only from the positive difference between the current and proposed patient prices, multiplied by eligible contrast-enhanced CT examinations. It represents incremental billed revenue, not guaranteed profit; actual results depend on patient volume, payer arrangements and the facility's billing policies. Contrast-media savings depend on the reduction achieved under the facility's approved clinical protocol.</p>
       <button class="btn-download" type="button" onclick="window.print()">Export Proposal PDF</button>
     </div>
   </section>
@@ -235,13 +243,24 @@
   function updateContrast() {
     const pts=num("c_pts"), machines=Math.max(1,num("c_machines")), cost=num("c_cost");
     const reduction=Math.min(80,num("c_saving_pct"))/100, days=num("c_days");
-    const years=safeYears("c_years"), price=num("c_price");
+    const price=num("c_price");
+    const currentBillingPrice=num("c_current_billing_price");
+    const proposedBillingPrice=num("c_proposed_billing_price");
     const annualStudies=pts*machines*days;
     const beforePer=cost, afterPer=cost*(1-reduction), savingPer=cost*reduction;
-    const annualBenefit=savingPer*annualStudies;
+    const annualContrastSavings=savingPer*annualStudies;
+    const additionalRevenuePerStudy=Math.max(0,proposedBillingPrice-currentBillingPrice);
+    const annualAdditionalRevenue=additionalRevenuePerStudy*annualStudies;
+    const annualBenefit=annualContrastSavings+annualAdditionalRevenue;
     set("c_before_study",money2(beforePer)); set("c_after_study",money2(afterPer)); set("c_save_study",money2(savingPer));
     set("c_before_annual",money(cost*annualStudies)); set("c_after_annual",money(afterPer*annualStudies));
-    set("c_save_annual",money(annualBenefit)); set("c_benefit",money(annualBenefit));
+    set("c_save_annual",money(annualContrastSavings));
+    set("c_current_price_study",money2(currentBillingPrice));
+    set("c_proposed_price_study",money2(proposedBillingPrice));
+    set("c_billing_increase_study",money2(additionalRevenuePerStudy));
+    set("c_billing_increase_annual",money(annualAdditionalRevenue));
+    set("c_combined_annual",money(annualBenefit));
+    set("c_benefit",money(annualBenefit));
     financial("c",annualBenefit,price);
   }
   function updateTube() {
@@ -318,7 +337,7 @@
     ["p_reduction","p_reduction_range",updatePet],["p_util","p_util_range",updatePet]
   ].forEach(args=>bindNumberAndRange(...args));
   const groups={
-    contrast:["c_price","c_days","c_years"],
+    contrast:["c_current_billing_price","c_proposed_billing_price","c_price","c_days","c_years"],
     tube:["t_variable","t_price","t_days","t_years"],
     pet:["p_scanners","p_time","p_hours","p_agent_price","p_agent_ml","p_dose_reduction","p_revenue","p_other_cost","p_price","p_days","p_years"]
   };
